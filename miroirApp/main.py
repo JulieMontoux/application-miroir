@@ -1,9 +1,11 @@
-from app.miroir import miroir_mot, est_palindrome
+from app.miroir import miroir_mot, est_palindrome, salutation, au_revoir
 
 def main():
+    print(salutation())
     while True:
         texte = input("> ")
         if texte.lower() in ("exit", "quit"):
+            print(au_revoir())
             break
         mots = texte.split()
         for mot in mots:
