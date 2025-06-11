@@ -72,12 +72,13 @@ class TestOHCE(unittest.TestCase):
         self.assertNotIn(ohce.messages["well_said"], result)
 
     def test_bien_dit_localized(self):
-        for mot, lang, _, _, _, is_pal in TEST_INPUTS:
+        for mot, lang, heure, _, _, is_pal in TEST_INPUTS:
             if is_pal:
-                with self.subTest(mot=mot, lang=lang):
-                    ohce = OHCE(language=lang)
-                    result = ohce.palindrome(mot)
-                    self.assertIn(ohce.messages["well_said"], result)
+                with self.subTest(mot=mot, lang=lang, heure=heure):
+                    with patch.object(OHCE, 'get_hour', return_value=heure):
+                        ohce = OHCE(language=lang)
+                        result = ohce.palindrome(mot)
+                        self.assertIn(mot+ "\n" + ohce.messages["well_said"], result)
 
     @patch.object(OHCE, 'is_palindrome')
     def test_bien_dit_is_not_checked_as_palindrome(self, mock_is_palindrome):
