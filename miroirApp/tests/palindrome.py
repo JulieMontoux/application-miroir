@@ -2,11 +2,11 @@ import unittest
 from app.palindrome import OHCE
 
 class TestOHCE(unittest.TestCase):
-    def test_dit_bonjour_en_premier(self):
+    def test_says_hello_first(self):
         # Étant donné une instance de OHCE
         ohce = OHCE()
         # Quand on saisit une chaîne quelconque
-        result = ohce.Palindrome("chat")
+        result = ohce.palindrome("chat")
         # Alors la réponse commence par "Bonjour"
         self.assertTrue(result.startswith("Bonjour"))
 
@@ -14,7 +14,7 @@ class TestOHCE(unittest.TestCase):
         # Étant donné une instance de OHCE
         ohce = OHCE()
         # Quand on saisit "chat"
-        result = ohce.Palindrome("chat")
+        result = ohce.palindrome("chat")
         # Alors la réponse contient "tahc"
         self.assertIn("tahc", result)
 
