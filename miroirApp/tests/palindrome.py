@@ -5,16 +5,16 @@ from app.palindrome import OHCE
 
 class TestOHCE(unittest.TestCase):
     def test_says_hello_first(self):
-        # Étant donné une instance de OHCE
-        ohce = OHCE()
-
         test_inputs = [
-            ("chat", False),
-            ("kayak", True),
+            "chat",
+            "kayak",
         ]
         # Pour chaque mot
-        for mot, est_palindrome in test_inputs:
-            with self.subTest(mot=mot, palindrome=est_palindrome):
+        for mot in test_inputs:
+            with self.subTest(mot=mot):
+                # Étant donné une instance de OHCE
+                ohce = OHCE()
+
                 # Quand on saisit le mot
                 result = ohce.palindrome(mot)
 
@@ -22,15 +22,16 @@ class TestOHCE(unittest.TestCase):
                 self.assertTrue(result.startswith("Bonjour"), f"Échec pour mot: {mot}")
 
     def test_response_ends_with_goodbye(self):
-        # Étant donné une instance de OHCE
-        ohce = OHCE()
         test_inputs = [
-            ("chat", False),
-            ("kayak", True),
+            "chat",
+            "kayak",
         ]
         # Pour chaque mot
-        for mot, est_palindrome in test_inputs:
-            with self.subTest(mot=mot, palindrome=est_palindrome):
+        for mot in test_inputs:
+            with self.subTest(mot=mot):
+                # Étant donné une instance de OHCE
+                ohce = OHCE()
+
                 # Quand on saisit un mot
                 result = ohce.palindrome(mot)
 
@@ -51,8 +52,7 @@ class TestOHCE(unittest.TestCase):
         # Quand on saisit un palindrome comme "kayak"
         result = ohce.palindrome("kayak")
         # Alors la réponse contient "Bien dit !" et que kayak est inversé
-        self.assertIn("kayak", result)
-        self.assertIn("Bien dit !", result)
+        self.assertIn("kayak\nBien dit !\n", result)
 
     def test_bien_dit_not_present_if_not_palindrome(self):
         # Étant donné une instance de OHCE
