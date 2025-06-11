@@ -18,5 +18,13 @@ class TestOHCE(unittest.TestCase):
         # Alors la réponse contient "tahc"
         self.assertIn("tahc", result)
 
+    def test_detects_palindrome(self):
+        # Étant donné une instance de OHCE
+        ohce = OHCE()
+        # Quand on saisit un palindrome comme "kayak"
+        result = ohce.palindrome("kayak")
+        # Alors la réponse contient "Bien dit !"
+        self.assertIn("Bien dit !", result)
+
 if __name__ == '__main__':
     unittest.main()
