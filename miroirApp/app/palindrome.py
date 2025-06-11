@@ -2,17 +2,33 @@ from datetime import datetime
 
 MESSAGES = {
     "fr": {
-        "hello_day": "Bonjour",
-        "hello_evening": "Bonsoir",
-        "goodbye_day": "Au revoir, bonne journée !",
-        "goodbye_evening": "Bonne soirée, à bientôt !",
+        "salutation": {
+            "matin": "Bonjour",
+            "après-midi": "Bonjour",
+            "soirée": "Bonsoir",
+            "nuit": "Bonsoir"
+        },
+        "revoir": {
+            "matin": "Au revoir, bonne journée !",
+            "après-midi": "Au revoir, bonne fin d'après-midi !",
+            "soirée": "Bonne soirée, à bientôt !",
+            "nuit": "Bonne nuit !"
+        },
         "well_said": "Bien dit !"
     },
     "en": {
-        "hello_day": "Good morning",
-        "hello_evening": "Good evening",
-        "goodbye_day": "Goodbye, have a nice day!",
-        "goodbye_evening": "Good night, see you soon!",
+        "salutation": {
+            "matin": "Good morning",
+            "après-midi": "Good afternoon",
+            "soirée": "Good evening",
+            "nuit": "Good night"
+        },
+        "revoir": {
+            "matin": "Goodbye, have a nice day!",
+            "après-midi": "Goodbye, enjoy your afternoon!",
+            "soirée": "Good night, see you soon!",
+            "nuit": "Goodbye, sleep well!"
+        },
         "well_said": "Well said!"
     }
 }
