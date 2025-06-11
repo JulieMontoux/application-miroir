@@ -42,14 +42,26 @@ class OHCE :
     def get_hour():
         return datetime.now().hour
 
+    def get_period(self):
+        hour = self.get_hour()
+        if 5 <= hour < 12:
+            return "matin"
+        elif 12 <= hour < 18:
+            return "après-midi"
+        elif 18 <= hour < 22:
+            return "soirée"
+        else:
+            return "nuit"
+
+
     def is_evening(self):
         return self.get_hour() >= 18
 
     def salutation(self):
-        return self.messages["hello_evening"] if self.is_evening() else self.messages["hello_day"]
+        return self.messages["salutation"][self.get_period()]
 
     def au_revoir(self):
-        return self.messages["goodbye_evening"] if self.is_evening() else self.messages["goodbye_day"]
+        return self.messages["revoir"][self.get_period()]
 
     def palindrome(self, input: str) -> str:
         hello = self.salutation()
