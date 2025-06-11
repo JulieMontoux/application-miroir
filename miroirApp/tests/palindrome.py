@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 from app.palindrome import OHCE
 
+# Variables globales utilisées dans certains tests pour plus de fluidité
 TEST_INPUTS = [
     ("chat", "fr", "Bonjour", "Au revoir", False),
     ("kayak", "fr", "Bonjour", "Au revoir", True),

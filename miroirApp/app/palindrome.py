@@ -14,7 +14,7 @@ MESSAGES = {
 class OHCE :
     def __init__(self, language="fr"):
         self.language = language
-        self.messages = MESSAGES.get(language, MESSAGES["fr"])
+        self.messages = MESSAGES.get(language, MESSAGES[language])
 
     def palindrome(self, input: str) -> str:
         response = f"{self.messages['hello']}\n"
