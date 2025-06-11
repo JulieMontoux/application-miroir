@@ -10,5 +10,6 @@ class OHCE :
         response += "Au revoir"
         return response
 
-    def is_palindrome(self, word: str) -> bool:
+    @staticmethod
+    def is_palindrome(word: str) -> bool:
         return word == word[::-1]
