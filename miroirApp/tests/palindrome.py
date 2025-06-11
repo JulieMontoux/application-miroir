@@ -5,37 +5,45 @@ from app.palindrome import OHCE
 
 # Variables globales utilisées dans certains tests pour plus de fluidité
 TEST_INPUTS = [
-    ("chat", "fr", "Bonjour", "Au revoir", False),
-    ("kayak", "fr", "Bonjour", "Au revoir", True),
-    ("hello", "en", "Hello", "Goodbye", False),
-    ("madam", "en", "Hello", "Goodbye", True),
+    # format : (mot, langue, heure simulée, hello attendu, goodbye attendu, est_palindrome)
+    ("chat", "fr", 9, "Bonjour", "Au revoir, bonne journée !", False),
+    ("kayak", "fr", 9, "Bonjour", "Au revoir, bonne journée !", True),
+    ("chat", "fr", 20, "Bonsoir", "Bonne soirée, à bientôt !", False),
+    ("kayak", "fr", 20, "Bonsoir", "Bonne soirée, à bientôt !", True),
+    ("hello", "en", 9, "Good morning", "Goodbye, have a nice day!", False),
+    ("madam", "en", 9, "Good morning", "Goodbye, have a nice day!", True),
+    ("hello", "en", 20, "Good evening", "Good night, see you soon!", False),
+    ("madam", "en", 20, "Good evening", "Good night, see you soon!", True),
 ]
+
 class TestOHCE(unittest.TestCase):
     def test_says_hello_first(self):
         # Pour chaque mot
-        for mot, lang, expected_hello, expected_bye, is_pal  in TEST_INPUTS:
-            with self.subTest(mot=mot):
-                # Étant donné une instance de OHCE
-                ohce = OHCE(language=lang)
+        for mot, lang, heure, hello_expected, goodbye_expected, is_pa  in TEST_INPUTS:
+            with self.subTest(mot=mot, lang=lang, heure=heure):
+                with patch.object(OHCE, 'get_hour', return_value=heure):
+                    # Étant donné une instance de OHCE
+                    ohce = OHCE(language=lang)
 
-                # Quand on saisit le mot
-                result = ohce.palindrome(mot)
+                    # Quand on saisit le mot
+                    result = ohce.palindrome(mot)
 
-                # Alors la réponse commence par "Bonjour"
-                self.assertTrue(result.startswith(expected_hello), f"Échec pour mot: {mot}")
+                    # Alors la réponse commence par "Bonjour"
+                    self.assertTrue(result.startswith(hello_expected), f"Échec pour mot: {mot}")
 
     def test_response_ends_with_goodbye(self):
         # Pour chaque mot
-        for mot, lang, expected_hello, expected_bye, is_pal in TEST_INPUTS:
-            with self.subTest(mot=mot):
-                # Étant donné une instance de OHCE
-                ohce = OHCE(language=lang)
+        for mot, lang, heure, hello_expected, goodbye_expected, is_pa  in TEST_INPUTS:
+            with self.subTest(mot=mot, lang=lang, heure=heure):
+                with patch.object(OHCE, 'get_hour', return_value=heure):
+                    # Étant donné une instance de OHCE
+                    ohce = OHCE(language=lang)
 
-                # Quand on saisit un mot
-                result = ohce.palindrome(mot)
+                    # Quand on saisit un mot
+                    result = ohce.palindrome(mot)
 
-                # Alors la réponse se termine par "Au revoir"
-                self.assertTrue(result.strip().endswith(expected_bye), f"Échec pour mot: {mot}")
+                    # Alors la réponse se termine par "Au revoir"
+                    self.assertTrue(result.strip().endswith(goodbye_expected), f"Échec pour mot: {mot}")
 
     def test_returns_input_reversed(self):
         for mot, lang, *_ in TEST_INPUTS:
@@ -64,7 +72,7 @@ class TestOHCE(unittest.TestCase):
         self.assertNotIn(ohce.messages["well_said"], result)
 
     def test_bien_dit_localized(self):
-        for mot, lang, _, _, is_pal in TEST_INPUTS:
+        for mot, lang, _, _, _, is_pal in TEST_INPUTS:
             if is_pal:
                 with self.subTest(mot=mot, lang=lang):
                     ohce = OHCE(language=lang)
@@ -79,6 +87,18 @@ class TestOHCE(unittest.TestCase):
         result = ohce.palindrome("! tid neiB")
         # Alors "Bien dit !" ne doit pas apparaître du tout
         mock_is_palindrome.assert_called_once_with("! tid neiB")
+
+    @patch.object(OHCE, 'get_hour', return_value=9)
+    def test_says_bonjour_morning(self, mock_hour):
+        ohce = OHCE(language="fr")
+        result = ohce.palindrome("kayak")
+        self.assertTrue(result.startswith("Bonjour"))
+
+    @patch.object(OHCE, 'get_hour', return_value=20)
+    def test_says_bonsoir_evening(self, mock_hour):
+        ohce = OHCE(language="fr")
+        result = ohce.palindrome("kayak")
+        self.assertTrue(result.startswith("Bonsoir"))
 
 if __name__ == '__main__':
     unittest.main()
