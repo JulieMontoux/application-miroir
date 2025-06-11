@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import patch
 
 from app.palindrome import OHCE
+from tests.builder import OHCEBuilder
 
 # Variables globales utilisées dans certains tests pour plus de fluidité
 TEST_INPUTS = [
@@ -100,6 +101,41 @@ class TestOHCE(unittest.TestCase):
         ohce = OHCE(language="fr")
         result = ohce.palindrome("kayak")
         self.assertTrue(result.startswith("Bonsoir"))
+
+    def test_palindrome_renvoie_bien_dit_dans_la_bonne_langue(self):
+        # ÉTANT DONNÉ un utilisateur parlant le français
+        builder = OHCEBuilder().with_langue("fr").with_heure(10)
+        ohce = builder.build()
+
+        # QUAND on entre un palindrome
+        result = ohce.palindrome("kayak")
+
+        # ALORS il est renvoyé
+        self.assertIn("kayak", result)
+        # ET le <bienDit> de cette langue est envoyé
+        self.assertIn("Bien dit !", result)
+
+    def test_salutation_dans_la_bonne_langue_en_premier(self):
+        # ÉTANT DONNÉ un utilisateur parlant anglais
+        ohce = OHCEBuilder().with_langue("en").with_heure(9).build()
+
+        # QUAND on entre "madam"
+        result = ohce.palindrome("madam")
+
+        # ALORS <hello> de cette langue est envoyé avant tout
+        self.assertTrue(result.startswith("Good morning"))
+
+    def test_au_revoir_envoye_en_dernier_selon_langue(self):
+        # ÉTANT DONNÉ un utilisateur parlant le français
+        ohce = OHCEBuilder().with_langue("fr").with_heure(21).build()
+
+        # QUAND on entre "chat"
+        result = ohce.palindrome("chat")
+
+        # ALORS <auRevoir> est envoyé en dernier
+        self.assertTrue(result.strip().endswith("Bonne soirée, à bientôt !"))
+
+
 
 if __name__ == '__main__':
     unittest.main()
