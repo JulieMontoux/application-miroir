@@ -10,6 +10,15 @@ class TestOHCE(unittest.TestCase):
         # Alors la réponse commence par "Bonjour"
         self.assertTrue(result.startswith("Bonjour"))
 
+    def test_says_bye_end(self):
+        # Étant donné une instance de OHCE
+        ohce = OHCE()
+        # Quand on saisit une chaîne quelconque
+        result = ohce.palindrome("chat")
+        # Alors la réponse termine par "Au revoir"
+        self.assertTrue(result.endswith("Au revoir"))
+
+
     def test_returns_input_reversed(self):
         # Étant donné une instance de OHCE
         ohce = OHCE()
