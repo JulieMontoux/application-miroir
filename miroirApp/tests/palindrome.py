@@ -1,4 +1,6 @@
 import unittest
+from unittest.mock import patch
+
 from app.palindrome import OHCE
 
 class TestOHCE(unittest.TestCase):
@@ -41,6 +43,23 @@ class TestOHCE(unittest.TestCase):
         result = ohce.palindrome("bonjour")
         # Alors la réponse ne contient pas "Bien dit !"
         self.assertNotIn("Bien dit !", result)
+
+    def test_exact_reversed_value_is_correct(self):
+        # Étant donné une instance de OHCE
+        ohce = OHCE()
+        # Quand on saisit "kayak"
+        result = ohce.palindrome("kayak")
+        # Alors la chaîne retournée contient bien "kayak" inversé
+        self.assertIn("kayak", result)
+
+    @patch.object(OHCE, 'is_palindrome')
+    def test_bien_dit_is_not_checked_as_palindrome(self, mock_is_palindrome):
+        # Étant donné une instance de OHCE
+        ohce = OHCE()
+        # Quand on saisit "! tid neiB" (qui retourne "Bien dit !" mais n'est pas un palindrome)
+        result = ohce.palindrome("! tid neiB")
+        # Alors "Bien dit !" ne doit pas apparaître du tout
+        mock_is_palindrome.assert_called_once_with("! tid neiB")
 
 if __name__ == '__main__':
     unittest.main()
