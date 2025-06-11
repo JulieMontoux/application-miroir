@@ -29,15 +29,17 @@ class OHCE :
     def is_evening(self):
         return self.get_hour() >= 18
 
-    def palindrome(self, input: str) -> str:
-        if self.is_evening():
-            hello = self.messages['hello_evening']
-            goodbye = self.messages['goodbye_evening']
-        else:
-            hello = self.messages['hello_day']
-            goodbye = self.messages['goodbye_day']
+    def salutation(self):
+        return self.messages["hello_evening"] if self.is_evening() else self.messages["hello_day"]
 
-        response = f"{hello}\n"
+    def au_revoir(self):
+        return self.messages["goodbye_evening"] if self.is_evening() else self.messages["goodbye_day"]
+
+    def palindrome(self, input: str) -> str:
+        hello = self.salutation()
+        goodbye = self.au_revoir()
+
+        response = hello + "\n"
         reversed_input = input[::-1]
         response += reversed_input + "\n"
 
