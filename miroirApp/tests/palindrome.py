@@ -17,6 +17,17 @@ TEST_INPUTS = [
     ("madam", "en", 20, "Good evening", "Good night, see you soon!", True),
 ]
 
+PERIOD_INPUTS = [
+    (6,"en" ,"matin", "Good morning", "Goodbye, have a nice day!"),
+    (13,"en" , "après-midi", "Good afternoon", "Goodbye, enjoy your afternoon!"),
+    (19, "en" ,"soirée", "Good evening", "Good night, see you soon!"),
+    (23,"en" , "nuit", "Good night", "Goodbye, sleep well!"),
+    (6, "fr" ,"matin", "Bonjour", "Au revoir, bonne journée !"),
+    (13,"fr" , "après-midi", "Bonjour", "Au revoir, bonne fin d'après-midi !"),
+    (19, "fr" ,"soirée", "Bonsoir", "Bonne soirée, à bientôt !"),
+    (23,"fr" , "nuit", "Bonsoir", "Bonne nuit !"),
+]
+
 class TestOHCE(unittest.TestCase):
     def test_says_hello_first(self):
         # Pour chaque mot
@@ -126,6 +137,29 @@ class TestOHCE(unittest.TestCase):
         result = ohce.palindrome("chat")
         # ALORS <auRevoir> est envoyé en dernier
         self.assertTrue(result.strip().endswith("Bonne soirée, à bientôt !"))
+
+    def test_salutation_selon_periode_et_langue(self):
+        for heure,lang, periode, salutation_attendue, _ in PERIOD_INPUTS:
+            with self.subTest(periode=periode, langue=lang):
+                # ÉTANT DONNÉ un utilisateur parlant anglais
+                # ET que la période de la journée est <période>
+                ohce = OHCEBuilder().with_langue(lang).with_heure(heure).build()
+                # QUAND on saisit un palindrome
+                result = ohce.palindrome("madam")
+                # ALORS <salutation> de cette langue à cette période est envoyé avant tout
+                self.assertTrue(result.startswith(salutation_attendue))
+
+    def test_au_revoir_selon_periode(self):
+        for heure,lang, periode, _, au_revoir_attendu in PERIOD_INPUTS:
+            with self.subTest(periode=periode, langue=lang):
+                # ÉTANT DONNÉ un utilisateur parlant anglais
+                # ET que la période de la journée est <période>
+                ohce = OHCEBuilder().with_langue(lang).with_heure(heure).build()
+                # QUAND on saisit une chaîne
+                result = ohce.palindrome("hello")
+                # ALORS <auRevoir> dans cette langue à cette période est envoyé en dernier
+                self.assertTrue(result.strip().endswith(au_revoir_attendu))
+
 
 if __name__ == '__main__':
     unittest.main()
