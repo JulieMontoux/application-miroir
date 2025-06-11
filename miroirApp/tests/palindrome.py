@@ -34,5 +34,13 @@ class TestOHCE(unittest.TestCase):
         # Alors la réponse contient "Bien dit !"
         self.assertIn("Bien dit !", result)
 
+    def test_bien_dit_not_present_if_not_palindrome(self):
+        # Étant donné une instance de OHCE
+        ohce = OHCE()
+        # Quand on saisit une chaîne non palindrome
+        result = ohce.palindrome("bonjour")
+        # Alors la réponse ne contient pas "Bien dit !"
+        self.assertNotIn("Bien dit !", result)
+
 if __name__ == '__main__':
     unittest.main()
