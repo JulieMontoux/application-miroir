@@ -14,7 +14,7 @@ class TestOHCE(unittest.TestCase):
         # Étant donné une instance de OHCE
         ohce = OHCE()
         # Quand on saisit "chat"
-        result = ohce.palindrome("chat")
+        result = ohce.Palindrome("chat")
         # Alors la réponse contient "tahc"
         self.assertIn("tahc", result)
 
